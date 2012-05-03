@@ -33,11 +33,11 @@ autocmd FileType smarty setlocal noexpandtab shiftwidth=2 tabstop=2 softtabstop=
 " PHP
 autocmd FileType php setlocal noexpandtab
 
+" Python
+autocmd FileType python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+
 " <ESC>2回でsearch highlight消し
 nmap <ESC><ESC> ;nohlsearch<CR><ESC>
-
-vnoremap <C-C> "+y
-map <C-V> "+gP
 
 " window移動楽にしたい
 nnoremap <C-j> ;<C-w>j
