@@ -4,6 +4,7 @@ colorscheme wombat256mod
 syntax on
 
 set number
+set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -13,12 +14,7 @@ set showcmd
 set fileformats=unix,dos,mac
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
-
-" status line
 set laststatus=2
-set statusline=%<%f\ %m%r%h%w
-set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
-set statusline+=%=%l/%L,%c%V%8P
 
 " Ruby用インデント設定
 autocmd FileType ruby setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -61,7 +57,8 @@ if has('vim_starting')
 endif
 " let NeoBundle manage NeoBundle
 " required! 
-"NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/neobundle.vim'
+
 " recommended to install
 NeoBundle 'Shougo/vimproc'
 " after install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
@@ -72,7 +69,10 @@ NeoBundle 'Shougo/unite.vim'
 " vim-scripts repos
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/vimfiler'
 NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'vim-scripts/sudo.vim'
+NeoBundle 'Lokaltog/vim-powerline'
 
 filetype plugin indent on     " required!
 
@@ -160,3 +160,13 @@ let g:use_zen_complete_tag = 1
 
 " rails.vim
 autocmd User Rails Rnavcommand fabricator spec/fabricators -suffix=_fabricator.rb -default=model()
+
+" vimfiler.vim
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
+
+"現在開いているバッファのディレクトリを開く
+nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
+
+"現在開いているバッファをIDE風に開く
+nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winw
