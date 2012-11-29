@@ -15,6 +15,7 @@ set fileformats=unix,dos,mac
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 set laststatus=2
+set guitablabel=%N:%t
 
 " Ruby用インデント設定
 autocmd FileType ruby setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -28,9 +29,6 @@ autocmd FileType html setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType smarty setlocal noexpandtab shiftwidth=2 tabstop=2 softtabstop=2
 " PHP
 autocmd FileType php setlocal noexpandtab
-
-" Python
-autocmd FileType python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 " <ESC>2回でsearch highlight消し
 nmap <ESC><ESC> ;nohlsearch<CR><ESC>
@@ -69,6 +67,7 @@ NeoBundle 'Shougo/unite.vim'
 " vim-scripts repos
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'mattn/zencoding-vim'
 NeoBundle 'vim-scripts/sudo.vim'
@@ -164,9 +163,23 @@ autocmd User Rails Rnavcommand fabricator spec/fabricators -suffix=_fabricator.r
 " vimfiler.vim
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
-
 "現在開いているバッファのディレクトリを開く
 nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
-
 "現在開いているバッファをIDE風に開く
 nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winw
+
+" vimsnippets
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_jump)" : "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+let g:neosnippet#snippets_directory='~/.vim/bundle/snipmate-snippets/snippets'
