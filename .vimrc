@@ -1,5 +1,38 @@
+"------------------------------------
+" neobundle.vim
+"------------------------------------
+set nocompatible               " be iMproved
+filetype plugin indent off     " required!
+
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  call neobundle#rc(expand('~/.vim/bundle/'))
+endif
+" let NeoBundle manage NeoBundle
+" required! 
+NeoBundle 'Shougo/neobundle.vim'
+
+" recommended to install
+NeoBundle 'Shougo/vimproc'
+" after install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'ujihisa/unite-colorscheme'
+
+" My Bundles here:
+" vim-scripts repos
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/vimfiler'
+NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'vim-scripts/sudo.vim'
+NeoBundle 'Lokaltog/vim-powerline'
+
+" colorscheme
+NeoBundle 'vim-scripts/wombat256.vim'
+
 set t_Co=256
-colorscheme wombat256mod
 
 syntax on
 
@@ -43,37 +76,9 @@ nnoremap <C-h> ;<C-h>j
 map <Leader>c <Plug>(operator-camelize)
 map <Leader>C <Plug>(operator-decamelize)
 
-"------------------------------------
-" neobundle.vim
-"------------------------------------
-set nocompatible               " be iMproved
-filetype plugin indent off     " required!
-
-if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-  call neobundle#rc(expand('~/.vim/bundle/'))
-endif
-" let NeoBundle manage NeoBundle
-" required! 
-NeoBundle 'Shougo/neobundle.vim'
-
-" recommended to install
-NeoBundle 'Shougo/vimproc'
-" after install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/unite.vim'
-
-" My Bundles here:
-" vim-scripts repos
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/vimfiler'
-NeoBundle 'mattn/zencoding-vim'
-NeoBundle 'vim-scripts/sudo.vim'
-NeoBundle 'Lokaltog/vim-powerline'
-
 filetype plugin indent on     " required!
+
+colorscheme wombat256mod
 
 "------------------------------------
 " neocomplecache.vim
