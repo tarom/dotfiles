@@ -61,7 +61,7 @@ autocmd FileType html setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 " Smarty
 autocmd FileType smarty setlocal noexpandtab shiftwidth=2 tabstop=2 softtabstop=2
 " PHP
-autocmd FileType php setlocal noexpandtab
+autocmd FileType php setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " <ESC>2回でsearch highlight消し
 nmap <ESC><ESC> ;nohlsearch<CR><ESC>
