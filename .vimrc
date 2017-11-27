@@ -1,3 +1,12 @@
+if stridx($TERM, "xterm-256color") >= 0
+  set t_Co=256
+else
+  set t_Co=16
+endif
+
+autocmd BufNewFile,BufRead *.es6 setf javascript
+autocmd BufRead,BufNewFile *.axlsx setfiletype ruby
+
 "------------------------------------
 " neobundle.vim
 "------------------------------------
@@ -10,8 +19,7 @@ if has('vim_starting')
 endif
 
 " Required:
-call neobundle#rc(expand('~/.vim/bundle/'))
-
+call neobundle#begin(expand('~/.vim/bundle/'))
 " let NeoBundle manage NeoBundle
 " required! 
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -31,16 +39,87 @@ NeoBundle 'tpope/vim-rails'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/vimfiler'
-NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'mattn/emmet-vim'
 NeoBundle 'vim-scripts/sudo.vim'
-NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'noprompt/vim-yardoc'
+NeoBundle 'editorconfig/editorconfig-vim'
+NeoBundle 'othree/yajs.vim'
+NeoBundle 'hashivim/vim-terraform'
+NeoBundle 'leafgarland/typescript-vim'
+NeoBundle 'Quramy/tsuquyomi'
+
+let g:lightline = {
+     \ 'colorscheme': 'wombat',
+     \ 'mode_map': { 'c': 'NORMAL' },
+     \ 'active': {
+     \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+     \ },
+     \ 'component_function': {
+     \   'modified': 'MyModified',
+     \   'readonly': 'MyReadonly',
+     \   'fugitive': 'MyFugitive',
+     \   'filename': 'MyFilename',
+     \   'fileformat': 'MyFileformat',
+     \   'filetype': 'MyFiletype',
+     \   'fileencoding': 'MyFileencoding',
+     \   'mode': 'MyMode',
+     \ },
+     \ 'separator': { 'left': '⮀', 'right': '⮂' },
+     \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+\ }
+
+function! MyModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! MyReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '⭤' : ''
+endfunction
+
+function! MyFilename()
+  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() : 
+        \  &ft == 'unite' ? unite#get_status_string() : 
+        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+function! MyFugitive()
+  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
+    let _ = fugitive#head()
+    return strlen(_) ? '⭠ '._ : ''
+  endif
+  return ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! MyFileencoding()
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function! MyMode()
+  return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction     \ }
+
+NeoBundle 'sorah/vim-slim', { 'branch' : 'sorah' }
+NeoBundle 'groenewege/vim-less'
 
 " colorscheme
-NeoBundle 'vim-scripts/wombat256.vim'
+NeoBundle 'dsolstad/vim-wombat256i'
 
 NeoBundle 'kchmck/vim-coffee-script'
 
-set t_Co=256
+call neobundle#end()
 
 syntax on
 
@@ -56,7 +135,6 @@ set fileformats=unix,dos,mac
 set list
 set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%
 set laststatus=2
-set guitablabel=%N:%t
 set ambiwidth=double
 set mouse=a
 set clipboard+=unnamed
@@ -70,6 +148,10 @@ autocmd FileType yaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType eruby setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 " HAML
 autocmd FileType haml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+" Slim
+autocmd FileType slim setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+" Sass
+autocmd FileType sass setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 " CoffeeScript
 autocmd FileType coffee setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -78,9 +160,15 @@ autocmd FileType coffee setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType html setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 " Smarty
-autocmd FileType smarty setlocal noexpandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType smarty setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 " PHP
-autocmd FileType php setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType php setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+" Javascript
+autocmd FileType javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+" JSON
+autocmd FileType json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+" Terraform
+autocmd FileType terraform setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 " <ESC>2回でsearch highlight消し
 nmap <ESC><ESC> ;nohlsearch<CR><ESC>
@@ -97,7 +185,8 @@ map <Leader>C <Plug>(operator-decamelize)
 
 filetype plugin indent on     " required!
 
-colorscheme wombat256mod
+set background=dark
+colorscheme wombat256i
 
 "------------------------------------
 " neocomplete.vim
