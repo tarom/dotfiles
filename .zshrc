@@ -1,7 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$PATH:$HOME/bin:/usr/local/bin
 export PATH=$PATH:./node_modules/.bin
+export PATH=$PATH:$HOME/go/bin
 export TERM=xterm-256color
+export SHELL=/usr/local/bin/zsh
 
 #### completion ####
 zstyle ':completion:*:default' menu select=2
@@ -16,7 +18,7 @@ setopt hist_ignore_dups
 ####
 
 #### spaceship zsh theme ####
-SPACESHIP_PROMPT_SYMBOL=">"
+SPACESHIP_CHAR_SYMBOL="> "
 SPACESHIP_TIME_SHOW=true
 SPACESHIP_BATTERY_SHOW=false
 SPACESHIP_PROMPT_ORDER=(
@@ -67,10 +69,23 @@ zplug 'denysdovhan/spaceship-zsh-theme', use:spaceship.zsh, from:github, as:them
 alias vim="reattach-to-user-namespace nvim"
 alias vi="reattach-to-user-namespace nvim"
 alias ls="ls -FG"
+alias dcex="docker-compose exec"
+alias fig="docker-compose"
 
 eval "$(direnv hook zsh)"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
-zplug load --verbose
+# PHP Brew
+[[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc
+
+zplug load
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+  if [[ -f .nvmrc && -r .nvmrc ]]; then
+    nvm use
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
